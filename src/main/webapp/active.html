@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>active</title>
+</head>
+<script src="js/jquery-3.3.1.js"></script>
+<script>
+    function getUrlParam(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+        var r = window.location.search.substr(1).match(reg);  //匹配目标参数
+        if (r != null) return unescape(r[2]);
+        return null; //返回参数值
+    }
+    $(function () {
+        var code = getUrlParam("code")
+        $("#txt").attr("value", code);
+
+        $("#active").submit(function () {
+            $.post("register/active", $(this).serialize(), function (data) {
+
+                if (data.flag) {
+                    alert("激活成功，请登录！")
+                } else {
+
+                    alert(data.errorMsg);
+                }
+            }, "json");
+
+        });
+    });
+
+
+
+</script>
+<body>
+    <h1>请直接点击提交按钮，切勿执行其他操作</h1>
+    <br>
+    <form id="active">
+        <input type="text" name="code" id="txt" value="">
+        <br>
+        <input type="submit" id="submit">
+    </form>
+
+</body>
+</html>
