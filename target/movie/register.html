@@ -57,9 +57,8 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 			$.post("register/userRegister", $(this).serialize(), function (data) {
 
 				if (checkEmail() && checkPassword()) {
-					alert(2);
 					if (data.flag) {
-						alert("注册成功请激活账号！");
+						alert("注册成功请登录邮箱激活账号！");
 					} else {
 						alert(data.errorMsg);
 					}
@@ -94,8 +93,8 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 			</div>
 			<div class="col-sm-3 header_right">
 			   <ul class="header_right_box">
-				 <li><img src="images/p1.png" alt=""/></li>
-				 <li><p><a href="login.html">Carol Varois</a></p></li>
+				 <li><a href="login.html"><img src="images/p1.png" alt=""/></a></li>
+				 <li><p></p></li>
 				 <li class="last"><i class="edit"> </i></li>
 				 <div class="clearfix"> </div>
 			   </ul>

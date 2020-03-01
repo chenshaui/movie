@@ -54,11 +54,16 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 	$(function () {
 		$("#login").submit(function () {
 			if (checkEmail() && checkPassword()) {
-				alert(0);
 				$.post("login/submitForm", $(this).serialize(), function (data) {
+
 					if (data.flag) {
+						document.cookie="name="+data.name;
+						var name = document.cookie.split(";")[0].split("=")[1];//获取cookie
+						//alert(name);
+						$("#user_name").html(name);
 						location.href = "index.html";
 					} else {
+
 						alert(data.errorMsg);
 					}
 				}, "json");
@@ -86,8 +91,8 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 			</div>
 			<div class="col-sm-3 header_right">
 			   <ul class="header_right_box">
-				 <li><img src="images/p1.png" alt=""/></li>
-				 <li><p><a href="login.html">Carol Varois</a></p></li>
+				 <li><a href="login.html"><img src="images/p1.png" alt=""/></a></li>
+				 <li><p id="user_name"></p></li>
 				 <li class="last"><i class="edit"> </i></li>
 				 <div class="clearfix"> </div>
 			   </ul>

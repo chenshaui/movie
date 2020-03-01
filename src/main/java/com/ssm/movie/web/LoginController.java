@@ -8,6 +8,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Controller
@@ -25,12 +27,17 @@ public class LoginController {
 
     @RequestMapping("/submitForm")
     public @ResponseBody ResultInfo loginForm(String email, String password) {
-
+        System.out.println(email);
+        System.out.println(password);
         try {
             List<User> users = userLoginSercice.findByEmail(email);
             if (users.size() == 1) {
                 if (users.get(0).getEmail().equals(email) && users.get(0).getPassword().equals(password) && users.get(0).getEmailStatus().equals("Y")) {
                     resultInfo.setFlag(true);
+                    resultInfo.setName(users.get(0).getName());
+                    resultInfo.setCode(users.get(0).getCode());
+                    Cookie cookie = new Cookie(users.get(0).getCode(), users.get(0).getName());
+                    resultInfo.setData(cookie);
                     return resultInfo;
                 } else {
                     if (users.get(0).getEmailStatus().equals("N")) {
@@ -58,7 +65,7 @@ public class LoginController {
             resultInfo.setErrorMsg("服务器异常请稍后重试！");
             return resultInfo;
         }
-
-
     }
+
+
 }
