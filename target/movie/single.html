@@ -141,7 +141,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
             }
             var url = location.href;
             var src = url.split("=")[1];
-            alert(src);
+            //alert(src);
 			$.post("single/saveMovieReview", {"src":src,"review":review,"code":code,"name":name}, function (data) {
 
 				if (data.flag) {

@@ -3,7 +3,6 @@ package com.ssm.movie.dao;
 import com.ssm.movie.bean.MovieMessage;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
-
 import java.util.List;
 
 @Repository

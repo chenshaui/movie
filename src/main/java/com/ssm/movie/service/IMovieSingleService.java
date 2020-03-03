@@ -11,5 +11,5 @@ public interface IMovieSingleService {
      * @param src
      * @return
      */
-    List<MovieMessage> findBySrc(String src);
+    List<MovieMessage> findBySrc(String src) throws Exception;
 }
