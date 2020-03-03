@@ -16,7 +16,7 @@ public interface IMovieReviewDao {
     @Insert("insert into movieReview (userCode, review, movieSrc, status, reviewTime, userName) values (#{userCode}, #{review}, #{movieSrc}, #{status}, #{reviewTime}, #{userName})")
     void saveMovieReview(MovieReview movieReview);
 
-    @Select("select movieReview.review, movieReview.reviewTime, movieReview.userName from movieReview where status='Y' order by id desc limit 20")
+    @Select("select movieReview.review, movieReview.reviewTime, movieReview.userName, movieReview.id from movieReview where status='Y' order by id desc limit 20")
     List<MovieReview> selectAll();
 
 }

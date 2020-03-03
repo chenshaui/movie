@@ -44,6 +44,9 @@ public class SingleController {
             resultInfo.setFlag(true);
             movieMessageList.get(0);
             resultInfo.setData(movieMessageList.get(0));
+            List<MovieReview> reviews = movieReviewService.selectMessage();
+            resultInfo.setList(reviews);
+            System.out.println(reviews);
             return resultInfo;
         } catch (Exception e) {
             //e.printStackTrace();
@@ -78,10 +81,10 @@ public class SingleController {
         }
     }
 
-    @RequestMapping("/reviewInformation")
+   /* @RequestMapping("/reviewInformation")
     public @ResponseBody ResultInfo reviewInformation() {
         try {
-            resultInfo.setData(movieReviewService.selectMessage());
+
             System.out.println(movieReviewService.selectMessage());
             resultInfo.setFlag(true);
             return resultInfo;
@@ -91,6 +94,6 @@ public class SingleController {
             resultInfo.setErrorMsg("服务器出错啦，请刷新重试！");
             return resultInfo;
         }
-    }
+    }*/
 
 }

@@ -11,6 +11,7 @@ public class ResultInfo implements Serializable {
     private String errorMsg;//发生异常的错误消息
     private String code;
     private String name;
+    private Object list;
     //无参构造方法
     public ResultInfo() {
     }
@@ -76,5 +77,13 @@ public class ResultInfo implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Object getList() {
+        return list;
+    }
+
+    public void setList(Object list) {
+        this.list = list;
     }
 }

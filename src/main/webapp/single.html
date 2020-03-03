@@ -41,30 +41,71 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 				$("#ageRestriction").html(date.data.ageRestriction);
 				$("#movieReview").html(date.data.movieReview);
 
+				var num = date.list.length;
+
+				var time = date.list[0].reviewTime;
+
+				var reviewTimes = new Date(time);
+
+				var lis = '<li>\n' +
+						'\t\t\t\t\t            <div class="preview"><a href="#"><img src="images/7.jpg" class="img-responsive" alt=""></a></div>\n' +
+						'\t\t\t\t\t            <div class="data">\n' +
+						'\t\t\t\t\t                <div class="title">'+ date.list[0].userName +'  /  '+ reviewTimes.toLocaleString() +'  <!--/  <a href="#">reply</a>--></div>\n' +
+						'\t\t\t\t\t                <p>'+ date.list[0].review + '</p>\n' +
+						'\t\t\t\t\t            </div>\n' +
+						'\t\t\t\t\t            <div class="clearfix"></div>\n' +
+						'\t\t\t\t\t        </li>';
+
+				for (var i = 1; i < num ; i++) {
+
+					var time = date.list[i].reviewTime;
+					var timeStr = new Date(time);
+
+					var li = '<li>\n' +
+							'\t\t\t\t\t            <div class="preview"><a href="#"><img src="images/2.jpg" class="img-responsive" alt=""></a></div>\n' +
+							'\t\t\t\t\t            <div class="data">\n' +
+							'\t\t\t\t\t                <div class="title">'+ date.list[i].userName +'  /  ' + timeStr.toLocaleString() + '</div>\n' +
+							'\t\t\t\t\t                <p>' + date.list[i].review + '</p>\n' +
+							'\t\t\t\t\t            </div>\n' +
+							'\t\t\t\t\t            <div class="clearfix"></div>\n' +
+							'\t\t\t\t\t        </li>';
+
+							lis += li;
+				}
+				$("#ul_review").prepend(lis);
 			} else {
 				alert(date.errorMsg);
 			}
 		}, "json");
 
-		$.post("single/reviewInformation",{}, function (data) {
-
-		    var lis ;
-            for (var i = 0; i < data.data.length; i++) {
-                var time = data.data[i].reviewTime;
+	/*	$.post("single/reviewInformation",{}, function (data) {
+			var time = data.list[data.list.length - 1].reviewTime;
+			var reviewTimes = new Date(time);
+		    var lis = '<li>\n' +
+					'\t\t\t\t\t            <div class="preview"><a href="#"><img src="images/7.jpg" class="img-responsive" alt=""></a></div>\n' +
+					'\t\t\t\t\t            <div class="data">\n' +
+					'\t\t\t\t\t                <div class="title">'+ data.list[data.list.length - 1].userName +'  /  '+ reviewTimes +'  <!--/  <a href="#">reply</a>--></div>\n' +
+					'\t\t\t\t\t                <p>'+ data.list[data.data.list - 1].review + '</p>\n' +
+					'\t\t\t\t\t            </div>\n' +
+					'\t\t\t\t\t            <div class="clearfix"></div>\n' +
+					'\t\t\t\t\t        </li>';
+            for (var i = data.list.length; i <= 1 ; i--) {
+                var time = data.list[i].reviewTime;
                 var date = new Date(time);
+
                 var li = '<li>\n' +
                     '\t\t\t\t\t            <div class="preview"><a href="#"><img src="images/2.jpg" class="img-responsive" alt=""></a></div>\n' +
                     '\t\t\t\t\t            <div class="data">\n' +
-                    '\t\t\t\t\t                <div class="title">'+ data.data[i].userName +'  /  ' + date.toLocaleString() + '</div>\n' +
-                    '\t\t\t\t\t                <p>' + data.data[i].review + '</p>\n' +
+                    '\t\t\t\t\t                <div class="title">'+ data.list[i].userName +'  /  ' + date.toLocaleString() + '</div>\n' +
+                    '\t\t\t\t\t                <p>' + data.list[i].review + '</p>\n' +
                     '\t\t\t\t\t            </div>\n' +
                     '\t\t\t\t\t            <div class="clearfix"></div>\n' +
                     '\t\t\t\t\t        </li>';
 
-                lis += li;
+				$("#ul_review").prepend(li);
             }
-            $("#ul_review").prepend(lis);
-        }, "json");
+
+        }, "json");*/
 		//限制长度
 		function checkReview() {
 			var review = $("#review").val();
@@ -100,14 +141,14 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
             }
             var url = location.href;
             var src = url.split("=")[1];
-            alert(src);
+            //alert(src);
 			$.post("single/saveMovieReview", {"src":src,"review":review,"code":code,"name":name}, function (data) {
 
 				if (data.flag) {
 				    var msg = '<li>\n' +
                         '\t\t\t\t\t            <div class="preview"><a href="#"><img src="images/2.jpg" class="img-responsive" alt=""></a></div>\n' +
                         '\t\t\t\t\t            <div class="data">\n' +
-                        '\t\t\t\t\t                <div class="title"> ' + name + '  / '  + new Date() +  '<!--/  <a href="#">reply</a>--></div>\n' +
+                        '\t\t\t\t\t                <div class="title"> ' + name + '  / '  + new Date().toLocaleString() +  '<!--/  <a href="#">reply</a>--></div>\n' +
                         '\t\t\t\t\t                <p>' + review + '</p>\n' +
                         '\t\t\t\t\t            </div>\n' +
                         '\t\t\t\t\t            <div class="clearfix"></div>\n' +
