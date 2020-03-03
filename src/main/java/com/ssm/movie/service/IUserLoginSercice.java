@@ -4,6 +4,9 @@ import com.ssm.movie.bean.User;
 
 import java.util.List;
 
+/**
+ * 登录service
+ */
 public interface IUserLoginSercice {
 
 

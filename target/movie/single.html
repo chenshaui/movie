@@ -14,10 +14,113 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <link href='http://fonts.useso.com/css?family=Roboto+Condensed:100,200,300,400,500,600,700,800,900' rel='stylesheet' type='text/css'>
 </head>
 <script>
+	//解析url
+	function GetQueryString(name) {
+		var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+		var r = window.location.search.substr(1).match(reg);//search,查询？后面的参数，并匹配正则
+		if(r != null) {
+			return  unescape(r[2]);
+		}
+		return null;
+	}
+	//获取电影信息
 	$(function () {
 		var name = document.cookie.split(";")[0].split("=")[1];//获取cookie
-		//alert(name);
 		$("#user_name").html(name);
+		/*var src = GetQueryString(src);
+		alert(src);*/
+		var src = location.search;
+		$.post("single/detailInformation", {"src":src}, function (date) {
+			if (date.flag) {
+				$("#country").html(date.data.country);
+				$("#movie").html(date.data.movie);
+				$("#category").html(date.data.category);
+				$("#releaseDate").html(date.data.releaseDate);
+				$("#director").html(date.data.director);
+				$("#actors").html(date.data.actors);
+				$("#ageRestriction").html(date.data.ageRestriction);
+				$("#movieReview").html(date.data.movieReview);
+
+			} else {
+				alert(date.errorMsg);
+			}
+		}, "json");
+
+		$.post("single/reviewInformation",{}, function (data) {
+
+		    var lis ;
+            for (var i = 0; i < data.data.length; i++) {
+                var time = data.data[i].reviewTime;
+                var date = new Date(time);
+                var li = '<li>\n' +
+                    '\t\t\t\t\t            <div class="preview"><a href="#"><img src="images/2.jpg" class="img-responsive" alt=""></a></div>\n' +
+                    '\t\t\t\t\t            <div class="data">\n' +
+                    '\t\t\t\t\t                <div class="title">'+ data.data[i].userName +'  /  ' + date.toLocaleString() + '</div>\n' +
+                    '\t\t\t\t\t                <p>' + data.data[i].review + '</p>\n' +
+                    '\t\t\t\t\t            </div>\n' +
+                    '\t\t\t\t\t            <div class="clearfix"></div>\n' +
+                    '\t\t\t\t\t        </li>';
+
+                lis += li;
+            }
+            $("#ul_review").prepend(lis);
+        }, "json");
+		//限制长度
+		function checkReview() {
+			var review = $("#review").val();
+			if (review.length > 100) {
+				alert("评论长度不可大于100个字符！");
+			}
+		}
+
+		$("#review").blur(checkReview);
+
+		$("#submit").click(function () {
+            var code;
+            var name;
+		    var cookie = document.cookie;
+            var arrCookie=cookie.split("; ");
+            for (var i = 0; i < arrCookie.length; i++) {
+                var arr = arrCookie[i].split("=");
+                if (arr[0] == "name") {
+                    name = arr[1];
+                }
+                if (arr[0] == "code") {
+                    code = arr[1];
+                }
+            }
+            if (typeof code == "undefined") {
+                alert("您尚未登录，请登录！");
+                return;
+            }
+            var review = $("#review").val();
+            if (review.length == 0) {
+                alert("评论内容不可为空！");
+                return;
+            }
+            var url = location.href;
+            var src = url.split("=")[1];
+            alert(src);
+			$.post("single/saveMovieReview", {"src":src,"review":review,"code":code,"name":name}, function (data) {
+
+				if (data.flag) {
+				    var msg = '<li>\n' +
+                        '\t\t\t\t\t            <div class="preview"><a href="#"><img src="images/2.jpg" class="img-responsive" alt=""></a></div>\n' +
+                        '\t\t\t\t\t            <div class="data">\n' +
+                        '\t\t\t\t\t                <div class="title"> ' + name + '  / '  + new Date() +  '<!--/  <a href="#">reply</a>--></div>\n' +
+                        '\t\t\t\t\t                <p>' + review + '</p>\n' +
+                        '\t\t\t\t\t            </div>\n' +
+                        '\t\t\t\t\t            <div class="clearfix"></div>\n' +
+                        '\t\t\t\t\t        </li>';
+                    $("#ul_review").prepend(msg);
+					alert("评论成功！");
+				} else {
+					alert(data.errorMsg);
+				}
+			});
+		});
+
+
 	});
 </script>
 <body>
@@ -53,7 +156,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                                 <span class="movie_rating">5.0</span>
                                 <img src="images/single.jpg" class="img-responsive" alt=""/>
                             </div>
-                            <div class="movie_rate">
+                            <!--<div class="movie_rate">
                             	<div class="rating_desc"><p>Your Vote :</p></div>
                             	<form action="" class="sky-form">
 							     <fieldset>					
@@ -74,44 +177,45 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 							    </fieldset>
 						  	   </form>
 						  	   <div class="clearfix"> </div>
-                            </div>
+                            </div>-->
                         </div>
                         <div class="desc1 span_3_of_2">
-                        	<p class="movie_option"><strong>Country: </strong><a href="#">established</a>, <a href="#">USA</a></p>
-                        	<p class="movie_option"><strong>Year: </strong>2014</p>
-                        	<p class="movie_option"><strong>Category: </strong><a href="#">Adventure</a>, <a href="#">Fantazy</a></p>
-                        	<p class="movie_option"><strong>Release date: </strong>December 12, 2014</p>
-                        	<p class="movie_option"><strong>Director: </strong><a href="#">suffered </a></p>
-                        	<p class="movie_option"><strong>Actors: </strong><a href="#">anything</a>, <a href="#">Lorem Ipsum</a>, <a href="#" discovered</a>, <a href="#"> Virginia</a>, <a href="#"> Virginia</a>, <a href="#">variations</a>, <a href="#">variations</a>, <a href="#">variations</a>, <a href="#"> Virginia</a> <a href="#">...</a></p>
-                            <p class="movie_option"><strong>Age restriction: </strong>13</p> 
+                        	<p class="movie_option"><strong>Country: </strong><a id="country"></a></p>
+                        	<p class="movie_option"><strong>Movie: </strong><a id="movie"></a></p>
+                        	<p class="movie_option"><strong>Category: </strong><a  id="category"></a></p>
+                        	<p class="movie_option"><strong>Release date: </strong><a id="releaseDate" > </a></p>
+                        	<p class="movie_option"><strong>Director: </strong><a id="director"></a></p>
+                        	<p class="movie_option"><strong>Actors: </strong><a  id="actors"></a></p>
+                            <p class="movie_option"><strong>Age restriction: </strong><a id="ageRestriction" ></a></p>
                             <!--<div class="down_btn"><a class="btn1" href="#"><span> </span>Download</a></div>-->
                          </div>
                         <div class="clearfix"> </div>
-                        <p class="m_4">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet.</p>
-		                <form method="post" action="contact-post.html">
+                        <p class="m_4" id="movieReview"></p>
+
+
+
+
 							<!--<div class="to">
 		                     	<input type="text" class="text" value="Name" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Name';}">
 							 	<input type="text" class="text" value="Email" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Email';}" style="margin-left:3%">
 							</div>-->
 							<div class="text">
-			                   <textarea value="Message:" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Message';}">Message:</textarea>
+			                   <textarea id="review" name="review" placeholder="Message:"></textarea>
 			                </div>
 			                <div class="form-submit1">
-					           <input name="submit" type="submit" id="submit" value="Submit Your Message"><br>
+					           <!--<input name="submit" type="submit"  value="Submit Your Message">--><button id="submit" type="submit">提交评论信息</button><br>
 					        </div>
 							<div class="clearfix"></div>
-                 		</form>
+
+
+
+
+
+
 		                <div class="single">
-		                <h1>10 Comments</h1>
-		                <ul class="single_list">
-					        <li>
-					            <div class="preview"><a href="#"><img src="images/2.jpg" class="img-responsive" alt=""></a></div>
-					            <div class="data">
-					                <div class="title">Movie  /  2 hours ago  <!--/  <a href="#">reply</a>--></div>
-					                <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.</p>
-					            </div>
-					            <div class="clearfix"></div>
-					        </li>
+		                <h1> Comments</h1>
+		                <ul class="single_list" id="ul_review">
+
 					         <li>
 					            <div class="preview"><a href="#"><img src="images/3.jpg" class="img-responsive" alt=""></a></div>
 					            <div class="data">

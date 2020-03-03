@@ -4,7 +4,9 @@ import com.ssm.movie.bean.User;
 
 import java.util.List;
 
-
+/**
+ * 注册相关逻辑
+ */
 public interface IUserRegisterService {
 
     /**
@@ -13,8 +15,17 @@ public interface IUserRegisterService {
      */
     void saveUser(User user);
 
+    /**
+     * 由激活码查询用户
+     * @param code
+     * @return
+     */
     List<User> findByCode(String code);
 
+    /**
+     * 查询用户激活状态
+     * @param id
+     */
     void updateEmailStatus(int id);
 
 }
